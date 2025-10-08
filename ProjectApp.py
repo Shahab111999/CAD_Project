@@ -324,13 +324,13 @@ elif page == "Japan Gut Prediction":
             ]
             rows.append(row)
 
-        table = Table(rows, hAlign="LEFT")
+        table = Table(rows, hAlign="CENTER")
         table.setStyle(TStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('ALIGN', (1, 1), (-1, -1), 'CENTER'),
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTNAME', (0, 1), (-1, -1), 'Times-Roman'),
         ]))
 
         story.append(Para("Classification Report", styles["Heading2"]))
@@ -346,7 +346,25 @@ elif page == "Japan Gut Prediction":
                 story.append(RLImg(tmp_img.name, width=400, height=250))
                 story.append(Spacer(1, 16))
                 tmp_img.close()
+            
+        # Add prediction data table
+        df_out = st.session_state["japan_data_out"][["Sample ID", "clade_name", "Status", "Predicted_Status"]]
+        story.append(Para("Prediction Report", styles["Heading2"]))
+        data_rows = [list(df_out.columns)] + df_out.values.tolist()
 
+        pred_table = Table(data_rows, hAlign="CENTER")
+        pred_table.setStyle(TStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTSIZE', (0, 0), (-1, 0), 8),
+            ('FONTNAME', (0, 1), (-1, -1), 'Times-Roman'),
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+        ]))
+
+        story.append(pred_table)
+        story.append(Spacer(1, 16))
+        
         doc.build(story)
 
         with open(temp_pdf.name, "rb") as f:
@@ -538,13 +556,13 @@ elif page == "USA Custom Page":
             ]
             rows.append(row)
 
-        table = Table(rows, hAlign="LEFT")
+        table = Table(rows, hAlign="CENTER")
         table.setStyle(TStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('ALIGN', (1, 1), (-1, -1), 'CENTER'),
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTNAME', (0, 1), (-1, -1), 'Times-Roman'),
         ]))
 
         story.append(Para("Classification Report", styles["Heading2"]))
@@ -561,6 +579,24 @@ elif page == "USA Custom Page":
                 story.append(Spacer(1, 16))
                 tmp_img.close()
 
+        # Add prediction data table
+        df_out = st.session_state["data_out"][["#SampleID", "COUNTRY_OF_BIRTH", "SEX", "LIVER_DISEASE", "AGE_YEARS", "DIABETES", "Actual_Status", "Predicted_Status"]]
+        story.append(Para("Prediction Report", styles["Heading2"]))
+        data_rows = [list(df_out.columns)] + df_out.values.tolist()
+
+        pred_table = Table(data_rows[:60], hAlign="CENTER")
+        pred_table.setStyle(TStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTSIZE', (0, 0), (-1, 0), 8),
+            ('FONTNAME', (0, 1), (-1, -1), 'Times-Roman'),
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+        ]))
+
+        story.append(pred_table)
+        story.append(Spacer(1, 16))
+        
         doc.build(story)
 
         with open(temp_pdf.name, "rb") as f:
