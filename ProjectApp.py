@@ -76,7 +76,7 @@ def load_feature_names():
 
 
 @st.cache_resource
-def load_japan_model(model_path="est_model_japan.pkl"):
+def load_japan_model(model_path="best_model_japan.pkl"):
     try:
         with open(model_path, "rb") as f:
             return pickle.load(f)
@@ -628,3 +628,4 @@ elif page == "About":
     - **Japan Dataset** → Uses the existing Japan prediction code  
     - **USA Dataset** → Use the 'USA Custom Page' to paste your own processing code
     """)
+
