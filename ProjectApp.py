@@ -60,14 +60,14 @@ CARD_STYLE = """
 @st.cache_resource
 def load_model():
     """Load the USA model used in the app (cached)."""
-    with open("models/xgboost_filtered_data_model.pkl", "rb") as f:
+    with open("xgboost_filtered_data_model.pkl", "rb") as f:
         xgb_model = joblib.load(f)
     return xgb_model
 
 
 @st.cache_data
 def load_feature_names():
-    with open("features/feature_names_in_order_filtered_data.json", "r") as f:
+    with open("feature_names_in_order_filtered_data.json", "r") as f:
         feature_names = json.load(f)
         print(f"Loaded {len(feature_names)} feature names.")
     if not isinstance(feature_names, (list, tuple)):
@@ -76,7 +76,7 @@ def load_feature_names():
 
 
 @st.cache_resource
-def load_japan_model(model_path="models/best_model_japan.pkl"):
+def load_japan_model(model_path="best_model_japan.pkl"):
     try:
         with open(model_path, "rb") as f:
             return pickle.load(f)
@@ -86,7 +86,7 @@ def load_japan_model(model_path="models/best_model_japan.pkl"):
 
 
 @st.cache_data
-def load_japan_features(features_path="features/best_model_japan.json"):
+def load_japan_features(features_path="best_model_japan.json"):
     try:
         with open(features_path, "r") as f:
             return json.load(f)
@@ -628,3 +628,4 @@ elif page == "About":
     - **Japan Dataset** → Uses the existing Japan prediction code  
     - **USA Dataset** → Use the 'USA Custom Page' to paste your own processing code
     """)
+
